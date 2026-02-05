@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime
 
-BOT_TOKEN = "8477262621:AAHaIyBEaUl2zbh-EL8w_66xxjl_9So8kKU    "
+BOT_TOKEN = "8477262621:AAHaIyBEaUl2zbh-EL8w_66xxjl_9So8kKU"
 CHAT_ID = "824968295"
 
 def send(msg):
