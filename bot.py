@@ -5,6 +5,53 @@ import os
 BOT_TOKEN = os.getenv("BOT8477262621:AAHaIyBEaUl2zbh-EL8w_66xxjl_9So8kKU_TOKEN")
 CHAT_ID = os.getenv("824968295")
 
+headers = {
+    "User-Agent": "Mozilla/5.0"
+}
+
+def send(msg):
+    url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+    requests.post(url, json={"chat_id": CHAT_ID, "text": msg})
+
+
+def get_price(url):
+    r = requests.get(url, headers=headers)
+    soup = BeautifulSoup(r.text, "html.parser")
+
+    price_el = soup.select_one(".a-price-whole")
+
+    if not price_el:
+        return None
+
+    price = price_el.text.replace(",", "").replace("₹", "").strip()
+    return int(price)
+
+
+def check_product(name, url, target):
+    price = get_price(url)
+
+    if price is None:
+        send(f"⚠️ Could not fetch price for {name}")
+        return
+
+    if price <= target:
+        send(f"🔥 PRICE DROP!\n{name}\n₹{price} (target ₹{target})")
+
+
+if __name__ == "__main__":
+
+    check_product(
+        "KENT Ultra Digital Air Fryer 4.5L",
+        "https://www.amazon.in/gp/aw/d/B0DGKY4WLP",
+        5900
+    )
+
+    check_product(
+        "Nutricook Air Fryer",
+        "https://www.amazon.in/dp/B0DN162F92",
+        5300
+    )
+
 
 def send(msg):
     url = f"https://api.telegram.org/bot{BOT_8477262621:AAHaIyBEaUl2zbh-EL8w_66xxjl_9So8kKUTOKEN}/sendMessage"
